@@ -11,7 +11,6 @@ var config = {
 firebase.initializeApp(config);
 
 var database = firebase.database();
-var events = [];
 
 $(document).ready(function () {
     // When user clicks "search" button, add a new artist to firebase (assuming it doesn't already
@@ -50,19 +49,32 @@ $(document).ready(function () {
         })
             .done(function (response) {
                 // Clear our global events array. We will populate it next.
-                events.length = 0;
+                var event;
+
+                // THIS IS THE PART THAT POPULATES THE EVENTS TABLE AND THE MAP MARKERS, ETC. ON SCREEN
+                // Clear the table body rows
+                $("#events-table-body tr").remove();
+
+                // This is the main loop where we will do things with each of the event dates/venues/etc.
                 for (var i = 0; i < response.length; i++) {
-                    events[i] = response[i];
+
+                    // save event object off into a variable for easier access
+                    event = response[i];
+
+                    // add a row to the on-screen events table
+                    $("#events-table-body").append("<tr><td>" + event.datetime + "</td>" +
+                        "<td>" + event.venue.city + ", " + event.venue.region + ", " + event.venue.country + "</td>" +
+                        "<td>" + event.venue.name + "</td>" +
+                        "<td>" + GetTicketOfferUrl(event) + "</td></tr>");
+
+                    // TODO Scott: use the event.venue.latitude and event.venue.longitude fields for this event to put a marker
+                    // on the map for this venue
+
+
                 }
+
+
             });
-
-
-        for(var j=0; j<events.length; j++) {
-            $("#events-table").append("<tr><td>" + events[j].datetime + "</td>" +
-                "<td>" + events[j].venue.city + "</td>" +
-                "<td>" + events[j].venue.region + "</td>" +
-                "<td>" + events[j].venue.country + "</td></tr>");
-        }
 
 
         // clear the on-screen fields
@@ -75,11 +87,23 @@ $(document).ready(function () {
     // On changes to DB - this will be called once on first page load
     // and then every time a new entry is added to the DB
     database.ref().on("value", function (snapshot) {
-        // TODO: add new item to the "your searches" list
+        // TODO: add new artist to the "your artists" list
     }, function (errorObject) {
         // Handle the errors
         console.log("Errors handled: " + errorObject.code);
     });
 
 
+    // Utility function
+    function GetTicketOfferUrl(event) {
+        var offer;
+        for (var i=0; i<event.offers.length; i++) {
+            offer = event.offers[i];
+            if ((offer.type === "Tickets") && (offer.status === "available")) {
+                return "<a href='"+ offer.url + "'><span class=\"glyphicon glyphicon-qrcode\"></span></a>";
+            }
+        }
+
+        return "none";
+    }
 });
