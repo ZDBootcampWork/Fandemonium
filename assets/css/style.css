@@ -29,3 +29,9 @@ th {
     font-weight: bold;
 }
 
+
+img {
+    margin: 5px 5px;
+    padding: 3px;
+    border: 2px outset whitesmoke;
+}

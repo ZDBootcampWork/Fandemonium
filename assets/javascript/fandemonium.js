@@ -18,6 +18,7 @@ $(document).ready(function () {
     // to populate the screen sections.
     $("#search-events").on("click", function () {
         event.preventDefault();
+        $('.social-links').empty();
 
         var artist = $("#artist-input").val().trim();
         var startDate = $("#start-date-input").val().trim();
@@ -29,16 +30,71 @@ $(document).ready(function () {
         // TODO: put the searched artist in DB - Need to check for dup's before adding to DB
         // database.ref().push(artist);
 
-        // Start of Denis' AJAX call
+        // Start of Denis' AJAX call to get band ID
         var musicGraphKey = '40fa13bb567aa61a95cd54d12c4badad';
+        var bandId;
+
         $.ajax({
-            url: "http://api.musicgraph.com/api/v2/artist/suggest?api_key="+musicGraphKey+"&prefix="+ artist +"&limit=1",
+            url: "http://api.musicgraph.com/api/v2/artist/suggest?api_key=" + musicGraphKey + "&prefix=" + artist + "&limit=1",
             method:'GET'
         })
         .done(function (response) {
-            console.log("Denis ajax object: "+ response);
-        });
+            bandId = response.data[0].id;
+            $.ajax({
+                url: "http://api.musicgraph.com/api/v2/artist/" + bandId + "/social-urls?api_key=" + musicGraphKey,
+                method:'GET'
+            })
+            .done(function (response) {
+                $('.artist-name').text(response.data.name + " Links");
+                var responseObject = response.data;
+                var linkCounter = 0;
+                if (responseObject.hasOwnProperty("official_url")) {
+                    linkCounter++;
+                    var officialUrl = response.data.official_url[0];
+                    $('.social-links').append("<a class='icon-link' href=" + officialUrl +" target='_blank'><img alt='official band website' data-toggle='tooltip' title='Official Homepage' src='assets/images/homepage.png' width='75'></a>");
+                }
 
+                if (responseObject.hasOwnProperty("wikipedia_url")){
+                    linkCounter++;
+                    var wikipedia = response.data.wikipedia_url[0];
+                    $('.social-links').append("<a class='icon-link' href=" + wikipedia +" target='_blank'><img alt='wikipedia page' data-toggle='tooltip' title='Wikipedia Page' src='assets/images/wikipedia.png' width='75'></a>");
+                }
+                
+                if (responseObject.hasOwnProperty("twitter_url")){
+                    linkCounter++;
+                    var twitter = response.data.twitter_url[0];
+                    $('.social-links').append("<a class='icon-link' href=" + twitter +" target='_blank'><img alt='twitter page' data-toggle='tooltip' title='Official Twitter' src='assets/images/twitter.png' width='75'></a>");
+                }
+                
+                if (responseObject.hasOwnProperty("facebook_url")){
+                    linkCounter++;
+                    var facebook = response.data.facebook_url;
+                    $('.social-links').append("<a class='icon-link' href=" + facebook +" target='_blank'><img alt='facebook page' data-toggle='tooltip' title='Official Facebook' src='assets/images/facebook.png' width='75'></a>");
+                }
+                
+
+                if (responseObject.hasOwnProperty("instagram_url")){
+                    linkCounter++;
+                    var instagram = response.data.instagram_url[0];
+                    $('.social-links').append("<a class='icon-link' href=" + instagram +" target='_blank'><img alt='instagram page' data-toggle='tooltip' title='Official Instagram' src='assets/images/instagram.png' width='75'></a>");
+                }
+
+                
+                if (responseObject.hasOwnProperty("youtube_url")){
+                    linkCounter++;
+                    var youtube = response.data.youtube_url[0];
+                    $('.social-links').append("<a class='icon-link' href=" + youtube +" target='_blank'><img alt='youtube page' data-toggle='tooltip' title='Official YouTube Channel' src='assets/images/youtube.png' width='75'></a>");
+                }
+
+                if (linkCounter === 0){
+                    alert("no social links found");
+                    //use modal instead
+                }
+            });
+
+
+        });
+        
         // Call bandsintown API
         $.ajax({
             // TODO: if dates are entered url looks like this
