@@ -1,0 +1,31 @@
+/* Common items */
+body {
+    font-family: 'Lemonada', cursive;
+    font-size: 14px;
+}
+
+th {
+    background-color: #38404b;
+    color: white;
+}
+
+.panel-transparent {
+    background: none;
+}
+
+/* Overriding some bootstrap styles here */
+/* Make the jumbotron fonts smaller */
+.jumbotron {
+    padding: 10px;
+    background-color: #2e73b8;
+    color: white;
+}
+
+.jumbotron h1 {
+    font-size: 40px;
+    line-height: 50px;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-weight: bold;
+}
+
