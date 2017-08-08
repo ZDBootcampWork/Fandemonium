@@ -30,6 +30,15 @@ $(document).ready(function () {
         // TODO: put the searched artist in DB - Need to check for dup's before adding to DB
         // database.ref().push(artist);
 
+        // Start of Denis' AJAX call
+        var musicGraphKey = '40fa13bb567aa61a95cd54d12c4badad';
+        $.ajax({
+            url: "http://api.musicgraph.com/api/v2/artist/suggest?api_key="+musicGraphKey+"&prefix="+ artist +"&limit=1",
+            method:'GET'
+        })
+        .done(function (response) {
+            console.log("Denis ajax object: "+ response);
+        });
 
         // Call bandsintown API
         $.ajax({
