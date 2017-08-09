@@ -36,6 +36,13 @@ img {
     border: 2px outset whitesmoke;
 }
 
+.modal-backdrop.fade.in {
+  z-index: 0;
+}
+.modal-dialog {
+    margin-top: 10%;
+}
+
 .artist-button {
     margin: 3px;
 }

@@ -100,8 +100,7 @@ $(document).ready(function () {
                 }
 
                 if (linkCounter === 0){
-                    alert("no social links found");
-                    //use modal instead
+                    bootbox.alert('No info/social links found for this artist.')
                 }
             });
 
