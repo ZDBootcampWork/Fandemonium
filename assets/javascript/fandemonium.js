@@ -122,21 +122,31 @@ $(document).ready(function () {
                         "<td>" + event.venue.city + ", " + event.venue.region + ", " + event.venue.country + "</td>" +
                         "<td>" + event.venue.name + "</td>" +
                         "<td>" + GetTicketOfferUrl(event) + "</td></tr>");
+                        }
 
-                    // TODO Scott: use the event.venue.latitude and event.venue.longitude fields for this event to put a marker
-                    // on the map for this venue
-
-
-                }
-
-
+                mapboxgl.accessToken = "pk.eyJ1Ijoic2NvdHRqYWMwMSIsImEiOiJjajYxamFzdmkwdmNlMndvMzNsam00ZG1oIn0.u5dRjgnkQLTHRcKuxB-KkQ";
+                    var mapbox = new mapboxgl.Map({
+                      container: "mapbox",
+                      style: "mapbox://styles/mapbox/streets-v9",
+                      center: [-78.6382, 35.7769],
+                      zoom: 12
+                      });                        
             });
 
+        // Display the current day and time on the panel heading -->
 
+        displayTime();
         // clear the on-screen fields
         $("#artist-input").val('');
         $("#start-date-input").val('');
         $("#end-date-input").val('');
+
+        //Display the current date and time in the 
+        function displayTime() {
+        var time = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
+        $("#currClock").html(time);
+        setTimeout(displayTime, 1000);
+        }
 
     });
 
