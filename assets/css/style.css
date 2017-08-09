@@ -35,3 +35,7 @@ img {
     padding: 3px;
     border: 2px outset whitesmoke;
 }
+
+.artist-button {
+    margin: 3px;
+}
