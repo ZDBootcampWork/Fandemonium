@@ -35,3 +35,22 @@ img {
     padding: 3px;
     border: 2px outset whitesmoke;
 }
+/* for the maps markers and popups*/
+.marker {
+  background-image: url("../images/music-15.svg");
+  background-size: cover;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.mapboxgl-popup {
+  max-width: px;
+}
+
+.mapboxgl-popup-content {
+  text-align: center;
+  font-family: "Open Sans", sans-serif;
+  font-size: 9;
+}

@@ -123,18 +123,65 @@ $(document).ready(function () {
                         "<td>" + event.venue.name + "</td>" +
                         "<td>" + GetTicketOfferUrl(event) + "</td></tr>");
                         }
+                
+                //Create geojson data ppints for markers
+                var venueName = event.venue.name;
+                var venueCity = event.venue.city;
+                var venueRegion = event.venue.region;
+                var venueLat = event.venue.latitude;
+                var venueLong = event.venue.longitude;
 
+                //Add the map to the DOM
                 mapboxgl.accessToken = "pk.eyJ1Ijoic2NvdHRqYWMwMSIsImEiOiJjajYxamFzdmkwdmNlMndvMzNsam00ZG1oIn0.u5dRjgnkQLTHRcKuxB-KkQ";
                     var mapbox = new mapboxgl.Map({
                       container: "mapbox",
                       style: "mapbox://styles/mapbox/streets-v9",
-                      center: [-78.6382, 35.7769],
-                      zoom: 12
-                      });                        
+                      center: [venueLong, venueLat],
+                      zoom: 5
+                      });
+                    //Create the geojson for the map w/markers and popups
+                      var geojson = {
+                              type: "FeatureCollection",
+                              features: [{
+                                type: "Feature",
+                                geometry: {
+                                  type: "Point",
+                                  coordinates: [venueLong, venueLat]
+                                },
+                                properties: {
+                                  title: venueName,
+                                  description: venueCity + "," + venueRegion
+                                }
+                              },
+                              {
+                                type: 'Feature',
+                                geometry: {
+                                  type: 'Point',
+                                  coordinates: [-122.414, 37.776]
+                                },
+                                properties: {
+                                  title: 'Mapbox',
+                                  description: 'San Francisco, California'
+                                }
+                              }]
+                            };
+                            // add markers to map
+                            geojson.features.forEach(function(marker) {
+
+                              // create a HTML element for each feature
+                              var el = document.createElement("div");
+                              el.className = "marker";
+
+                              // make a marker for each feature and add to the map
+                              new mapboxgl.Marker(el, { offset: [-50 / 2, -50 / 2] })
+                                  .setLngLat(marker.geometry.coordinates)
+                                  .setPopup(new mapboxgl.Popup({ offset: 5 }) // add popups
+                                  .setHTML("<h5>" + marker.properties.title + "</h5><p>" + marker.properties.description + "</p>"))
+                                  .addTo(mapbox);
+                });                     
             });
 
         // Display the current day and time on the panel heading -->
-
         displayTime();
         // clear the on-screen fields
         $("#artist-input").val('');
