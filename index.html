@@ -24,14 +24,14 @@
 
     <!-- My styles -->
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    <!-- Google Font -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Lemonada" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 
     <!-- Mapbox libray -->
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>
     <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.js"></script>
     <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.css" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 
 </head>
 
@@ -77,7 +77,7 @@
 
                         <div class="form-group">
                             <div class="col-md-offset-7 col-md-2">
-                                <button type="submit" class="btn btn-default btn-primary" id="search-events" type="submit">Search</button>
+                                <button class="btn btn-default btn-primary" id="search-events">Search</button>
                             </div>
                         </div>
                     </form>
@@ -85,22 +85,30 @@
             </div>
         </div>
 
-        <div class="col-md-4">
-            <div id="mapbox" style="width: 500px; height: 300px;"></div>
+        <div class="col-md-6">
+            <div id="mapbox" style="width: 560px; height: 300px;"></div>
         </div>
-        <div class="col-md-4 social-div">
-            <p class="artist-name"></p>
-            <div class="social-links"></div>
+
+
+        <div class="col-md-2 social-div">
+            <div class="panel panel-default panel-primary panel-transparent">
+                <div class="panel-heading">
+                    <b class="artist-name"></b>
+                </div>
+                <div class="panel-body">
+                    <div class="social-links"></div>
+                </div>
+            </div>
         </div>
     </div>
     <!-- create row and col-12 to hold the panel table form -->
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 events-div">
             <div class="panel panel-default panel-primary panel-transparent">
 
                 <!-- Default panel contents -->
                 <div class="panel-heading">
-                    <b>Upcoming Events</b>
+                    <b class="events-heading"> </b>
                     <div id="currClock" style="float:right;"></div>
                 </div>
 

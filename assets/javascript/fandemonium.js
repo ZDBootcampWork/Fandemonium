@@ -22,6 +22,9 @@ var Events = [];
 $(document).ready(function () {
     var $artistButtons = $("#my-artists-buttons");
     $artistButtons.empty();
+    // hide social div and events div on initial page load
+    $(".social-div").hide();
+    $(".events-div").hide();
 
     //////////////////////////////////////////////////////////////////////////////////////////////////
     // THIS IS THE MAIN CLICK HANDLER -- A LOT OF THINGS HAPPEN WHEN USER ENTERS ARTIST NAME
@@ -38,6 +41,9 @@ $(document).ready(function () {
         var artist = $("#artist-input").val().trim();
         var startDate = $("#start-date-input").val().trim();
         var endDate = $("#end-date-input").val().trim();
+
+        $(".events-heading").html(artist + " - Upcoming Shows");
+        $(".events-div").show();
 
         // TODO: validate input here for dates if entered - use modals for error messages
 
@@ -61,6 +67,8 @@ $(document).ready(function () {
             method: 'GET'
         })
             .done(function (response) {
+                // hide div first
+                $(".social-div").hide();
                 bandId = response.data[0].id;
                 // Once we got band id, we make another ajax call to get social URLs for the artist
                 $.ajax({
@@ -84,6 +92,9 @@ $(document).ready(function () {
                             // if no social links for this artist - display a message
                             $('.artist-name').text("No pages found for " + response.data.name);
                         }
+
+                        // show social div
+                        $(".social-div").show();
                     }); // end of second API call to musicgraph
             }); // end of first API call to musicgraph
 
@@ -215,6 +226,7 @@ $(document).ready(function () {
         var $newButton = $("<button>");
         // Add some bootstrap classes and attributes to our button
         $newButton.attr("type", "button");
+        $newButton.attr("data-artist", childSnapshot.val().artist);
         $newButton.addClass("btn btn-info btn-sm artist-button");
         // Provide button text
         $newButton.text(childSnapshot.val().artist);
@@ -225,8 +237,15 @@ $(document).ready(function () {
         console.log("Errors handled: " + errorObject.code);
     });
 
-    // TODO: ZD - add click handler for artist buttons.
+    // Click handler for artist buttons at the top.
+    // They act as if the user entered the artist name in
+    // form field and clicked "search"
+    $(document).on("click", ".artist-button", function(){
+        var clickedArtist = $(this).attr("data-artist");
 
+        $("#artist-input").val(clickedArtist);
+        $("#search-events").trigger("click");
+    });
 
     /////////////////////////////////////////////////////////////////////////////////////////////
     // Utility functions go here
@@ -236,14 +255,15 @@ $(document).ready(function () {
     // Find the first available tickets url in the event object returned by bandsintown API
     function GetTicketOfferUrl(event) {
         var offer;
+        var urlHtml = "None";
         for (var i = 0; i < event.offers.length; i++) {
             offer = event.offers[i];
             if ((offer.type === "Tickets") && (offer.status === "available")) {
-                return "<a href='" + offer.url + "'><span class=\"glyphicon glyphicon-qrcode\"></span></a>";
+                urlHtml = "<a target='_blank' href='" + offer.url + "'><img src='assets/images/ticket.png' height='10'></a>";
             }
         }
 
-        return "none";
+        return urlHtml;
     }
 
 
@@ -268,7 +288,7 @@ $(document).ready(function () {
             } else {
                 url = data[propertyName][0];
             }
-            $('.social-links').append("<a class='icon-link' href=" + url + " target='_blank'><img alt='" + altText + "' data-toggle='tooltip' title='" + altText + "' src='assets/images/" + imageName + ".png' width='75'></a>");
+            $('.social-links').append("<a class='icon-link' href=" + url + " target='_blank'><img alt='" + altText + "' data-toggle='tooltip' title='" + altText + "' src='assets/images/" + imageName + ".png' width='50'></a>");
             linkCounter++;
         }
     }
