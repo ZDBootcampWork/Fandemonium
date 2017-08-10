@@ -18,7 +18,7 @@ $(document).ready(function () {
 
     // When user clicks "search" button, add a new artist to firebase (assuming it doesn't already
     // exist in the db) and get info from bandsintown about artist and upcoming events and use the info
-    // to populate the screen sections.
+    // to populate the screen sections like map, artist links, etc.
     $("#search-events").on("click", function () {
         event.preventDefault();
         $('.social-links').empty();
@@ -31,14 +31,14 @@ $(document).ready(function () {
 
 
         // Put the searched artist in DB - Need to check for dup's before adding to DB
-        database.ref().orderByChild("artist").equalTo(artist).once("value", function(snapshot) {
+        database.ref().orderByChild("artist").equalTo(toTitleCase(artist)).once("value", function(snapshot) {
             var userData = snapshot.val();
             if (userData){
-                console.log(artirst + " exists in DB!");
+                console.log(artist + " exists in DB!");
             }
             else {
                 database.ref().push({
-                    artist: artist
+                    artist: toTitleCase(artist)
                 });
             }
         });
@@ -182,7 +182,12 @@ $(document).ready(function () {
 
     // TODO: ZD - add click handler for artist buttons.
 
-    // Utility function
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    // Utility functions
+    /////////////////////////////////////////////////////////////////////////////////////////////
+
+    ////////////////////////////////////////////////////////////////////////////////////////////
+    // Find the first available tickets url in the event object returned by bandsintown API
     function GetTicketOfferUrl(event) {
         var offer;
         for (var i=0; i<event.offers.length; i++) {
@@ -194,4 +199,13 @@ $(document).ready(function () {
 
         return "none";
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////
+    // Converts a string so that the result has every word starting with a capital letter
+    // We use this to store artists in the DB and to display them on screen as buttons
+    function toTitleCase(str)
+    {
+        return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+    }
+
 });
