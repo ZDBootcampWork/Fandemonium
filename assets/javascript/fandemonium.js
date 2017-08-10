@@ -15,6 +15,7 @@ var database = firebase.database();
 
 $(document).ready(function () {
     var $artistButtons = $("#my-artists-buttons");
+    $('input[name="daterange"]').daterangepicker();
     $artistButtons.empty();
 
     // When user clicks "search" button, add a new artist to firebase (assuming it doesn't already
