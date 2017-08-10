@@ -20,7 +20,7 @@ $(document).ready(function () {
 
     // When user clicks "search" button, add a new artist to firebase (assuming it doesn't already
     // exist in the db) and get info from bandsintown about artist and upcoming events and use the info
-    // to populate the screen sections.
+    // to populate the screen sections like map, artist links, etc.
     $("#search-events").on("click", function () {
         event.preventDefault();
         $('.social-links').empty();
@@ -33,14 +33,14 @@ $(document).ready(function () {
 
 
         // Put the searched artist in DB - Need to check for dup's before adding to DB
-        database.ref().orderByChild("artist").equalTo(artist).once("value", function(snapshot) {
+        database.ref().orderByChild("artist").equalTo(toTitleCase(artist)).once("value", function(snapshot) {
             var userData = snapshot.val();
             if (userData){
                 console.log(artist + " exists in DB!");
             }
             else {
                 database.ref().push({
-                    artist: artist
+                    artist: toTitleCase(artist)
                 });
             }
         });
@@ -106,18 +106,65 @@ $(document).ready(function () {
                         "<td>" + event.venue.name + "</td>" +
                         "<td>" + GetTicketOfferUrl(event) + "</td></tr>");
                         }
+                
+                //Create geojson data ppints for markers
+                var venueName = event.venue.name;
+                var venueCity = event.venue.city;
+                var venueRegion = event.venue.region;
+                var venueLat = event.venue.latitude;
+                var venueLong = event.venue.longitude;
 
+                //Add the map to the DOM
                 mapboxgl.accessToken = "pk.eyJ1Ijoic2NvdHRqYWMwMSIsImEiOiJjajYxamFzdmkwdmNlMndvMzNsam00ZG1oIn0.u5dRjgnkQLTHRcKuxB-KkQ";
                     var mapbox = new mapboxgl.Map({
                       container: "mapbox",
                       style: "mapbox://styles/mapbox/streets-v9",
-                      center: [-78.6382, 35.7769],
-                      zoom: 12
-                      });                        
+                      center: [venueLong, venueLat],
+                      zoom: 5
+                      });
+                    //Create the geojson for the map w/markers and popups
+                      var geojson = {
+                              type: "FeatureCollection",
+                              features: [{
+                                type: "Feature",
+                                geometry: {
+                                  type: "Point",
+                                  coordinates: [venueLong, venueLat]
+                                },
+                                properties: {
+                                  title: venueName,
+                                  description: venueCity + "," + venueRegion
+                                }
+                              },
+                              {
+                                type: 'Feature',
+                                geometry: {
+                                  type: 'Point',
+                                  coordinates: [-122.414, 37.776]
+                                },
+                                properties: {
+                                  title: 'Mapbox',
+                                  description: 'San Francisco, California'
+                                }
+                              }]
+                            };
+                            // add markers to map
+                            geojson.features.forEach(function(marker) {
+
+                              // create a HTML element for each feature
+                              var el = document.createElement("div");
+                              el.className = "marker";
+
+                              // make a marker for each feature and add to the map
+                              new mapboxgl.Marker(el, { offset: [-50 / 2, -50 / 2] })
+                                  .setLngLat(marker.geometry.coordinates)
+                                  .setPopup(new mapboxgl.Popup({ offset: 5 }) // add popups
+                                  .setHTML("<h5>" + marker.properties.title + "</h5><p>" + marker.properties.description + "</p>"))
+                                  .addTo(mapbox);
+                });                     
             });
 
         // Display the current day and time on the panel heading -->
-
         displayTime();
         // clear the on-screen fields
         $("#artist-input").val('');
@@ -152,7 +199,12 @@ $(document).ready(function () {
 
     // TODO: ZD - add click handler for artist buttons.
 
-    // Utility function
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    // Utility functions
+    /////////////////////////////////////////////////////////////////////////////////////////////
+
+    ////////////////////////////////////////////////////////////////////////////////////////////
+    // Find the first available tickets url in the event object returned by bandsintown API
     function GetTicketOfferUrl(event) {
         var offer;
         for (var i=0; i<event.offers.length; i++) {
@@ -164,6 +216,16 @@ $(document).ready(function () {
 
         return "none";
     }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////
+    // Converts a string so that the result has every word starting with a capital letter
+    // We use this to store artists in the DB and to display them on screen as buttons
+    function toTitleCase(str)
+    {
+        return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+    }
+
 
     // anyLinks = anyLinks || addSocialLink(responseObject, "official_url", 0, "Official Homepage", "homepage");
     function addSocialLink(data, propertyName, socialUrl, altText, imageName){
