@@ -10,6 +10,7 @@ var config = {
 
 firebase.initializeApp(config);
 
+var linkCounter;
 var database = firebase.database();
 
 $(document).ready(function () {
@@ -60,50 +61,18 @@ $(document).ready(function () {
             .done(function (response) {
                 $('.artist-name').text(response.data.name + " Links");
                 var responseObject = response.data;
-                var linkCounter = 0;
-                if (responseObject.hasOwnProperty("official_url")) {
-                    linkCounter++;
-                    var officialUrl = response.data.official_url[0];
-                    $('.social-links').append("<a class='icon-link' href=" + officialUrl +" target='_blank'><img alt='official band website' data-toggle='tooltip' title='Official Homepage' src='assets/images/homepage.png' width='75'></a>");
-                }
+                linkCounter = 0;
+                // function addSocialLink(data, propertyName, socialUrl, altText, imageName){
+                addSocialLink(responseObject, "official_url", 0, "Official Homepage", "homepage");
+                addSocialLink(responseObject, "wikipedia_url", 0, "Wikipedia Page", "wikipedia");
+                addSocialLink(responseObject, "twitter_url", 0, "Twitter Page", "twitter");
+                addSocialLink(responseObject, "facebook_url", null, "Facebook Page", "facebook");
+                addSocialLink(responseObject, "instagram_url", 0, "Instagram Page", "instagram");
+                addSocialLink(responseObject, "youtube_url", 0, "YouTube Page", "youtube");
 
-                if (responseObject.hasOwnProperty("wikipedia_url")){
-                    linkCounter++;
-                    var wikipedia = response.data.wikipedia_url[0];
-                    $('.social-links').append("<a class='icon-link' href=" + wikipedia +" target='_blank'><img alt='wikipedia page' data-toggle='tooltip' title='Wikipedia Page' src='assets/images/wikipedia.png' width='75'></a>");
+                if (linkCounter ===0){
+                    $('.artist-name').text("No pages found for " + response.data.name);
                 }
-                
-                if (responseObject.hasOwnProperty("twitter_url")){
-                    linkCounter++;
-                    var twitter = response.data.twitter_url[0];
-                    $('.social-links').append("<a class='icon-link' href=" + twitter +" target='_blank'><img alt='twitter page' data-toggle='tooltip' title='Official Twitter' src='assets/images/twitter.png' width='75'></a>");
-                }
-                
-                if (responseObject.hasOwnProperty("facebook_url")){
-                    linkCounter++;
-                    var facebook = response.data.facebook_url;
-                    $('.social-links').append("<a class='icon-link' href=" + facebook +" target='_blank'><img alt='facebook page' data-toggle='tooltip' title='Official Facebook' src='assets/images/facebook.png' width='75'></a>");
-                }
-                
-
-                if (responseObject.hasOwnProperty("instagram_url")){
-                    linkCounter++;
-                    var instagram = response.data.instagram_url[0];
-                    $('.social-links').append("<a class='icon-link' href=" + instagram +" target='_blank'><img alt='instagram page' data-toggle='tooltip' title='Official Instagram' src='assets/images/instagram.png' width='75'></a>");
-                }
-
-                
-                if (responseObject.hasOwnProperty("youtube_url")){
-                    linkCounter++;
-                    var youtube = response.data.youtube_url[0];
-                    $('.social-links').append("<a class='icon-link' href=" + youtube +" target='_blank'><img alt='youtube page' data-toggle='tooltip' title='Official YouTube Channel' src='assets/images/youtube.png' width='75'></a>");
-                }
-
-                if (linkCounter === 0){
-                    alert("no social links found");
-                    //use modal instead
-                }
-            });
 
 
         });
@@ -200,6 +169,7 @@ $(document).ready(function () {
         return "none";
     }
 
+
     ////////////////////////////////////////////////////////////////////////////////////////////
     // Converts a string so that the result has every word starting with a capital letter
     // We use this to store artists in the DB and to display them on screen as buttons
@@ -208,4 +178,20 @@ $(document).ready(function () {
         return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
     }
 
+
+    // anyLinks = anyLinks || addSocialLink(responseObject, "official_url", 0, "Official Homepage", "homepage");
+    function addSocialLink(data, propertyName, socialUrl, altText, imageName){
+        if (data.hasOwnProperty(propertyName)) {
+                    // linkCounter++;
+                    var url;
+                    if (socialUrl === null){
+                        url = data[propertyName];
+                    } else {
+                        url = data[propertyName][0];
+                    }
+                    $('.social-links').append("<a class='icon-link' href=" + url +" target='_blank'><img alt='"+altText+"' data-toggle='tooltip' title='"+altText+"' src='assets/images/"+imageName+".png' width='75'></a>");
+                    linkCounter++;
+                } 
+    }
+});
 });
