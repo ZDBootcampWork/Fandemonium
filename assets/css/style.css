@@ -19,6 +19,7 @@ th {
     padding: 10px;
     background-color: #2e73b8;
     color: white;
+    margin-bottom: 0;
 }
 
 .jumbotron h1 {
@@ -35,7 +36,6 @@ img {
     padding: 3px;
     border: 2px outset whitesmoke;
 }
-
 
 /* for the maps markers and popups*/
 .marker {
@@ -55,6 +55,12 @@ img {
   text-align: center;
   font-family: "Open Sans", sans-serif;
   font-size: 9;
+}
+.modal-backdrop.fade.in {
+  z-index: 0;
+}
+.modal-dialog {
+    margin-top: 10%;
 }
 
 .artist-button {
