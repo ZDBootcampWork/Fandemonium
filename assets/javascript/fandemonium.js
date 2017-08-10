@@ -13,6 +13,9 @@ firebase.initializeApp(config);
 var database = firebase.database();
 
 $(document).ready(function () {
+    var $artistButtons = $("#my-artists-buttons");
+    $artistButtons.empty();
+
     // When user clicks "search" button, add a new artist to firebase (assuming it doesn't already
     // exist in the db) and get info from bandsintown about artist and upcoming events and use the info
     // to populate the screen sections.
@@ -27,8 +30,18 @@ $(document).ready(function () {
         // TODO: validate input here for dates if entered - use modals for error messages
 
 
-        // TODO: put the searched artist in DB - Need to check for dup's before adding to DB
-        // database.ref().push(artist);
+        // Put the searched artist in DB - Need to check for dup's before adding to DB
+        database.ref().orderByChild("artist").equalTo(artist).once("value", function(snapshot) {
+            var userData = snapshot.val();
+            if (userData){
+                console.log(artirst + " exists in DB!");
+            }
+            else {
+                database.ref().push({
+                    artist: artist
+                });
+            }
+        });
 
         // Start of Denis' AJAX call to get band ID
         var musicGraphKey = '40fa13bb567aa61a95cd54d12c4badad';
@@ -197,15 +210,24 @@ $(document).ready(function () {
 
     });
 
-    // On changes to DB - this will be called once on first page load
+    // On changes to DB - this will be called on first page load
     // and then every time a new entry is added to the DB
-    database.ref().on("value", function (snapshot) {
-        // TODO: add new artist to the "your artists" list
-    }, function (errorObject) {
+    database.ref().on("child_added", function(childSnapshot) {
+        // Add new artist to the "your artists" buttons list
+        var $newButton = $("<button>");
+        // Add some bootstrap classes and attributes to our button
+        $newButton.attr("type", "button");
+        $newButton.addClass("btn btn-info btn-sm artist-button");
+        // Provide button text
+        $newButton.text(childSnapshot.val().artist);
+        // Added the button to the buttons-view div
+        $artistButtons.append($newButton);
         // Handle the errors
+    }, function(errorObject) {
         console.log("Errors handled: " + errorObject.code);
     });
 
+    // TODO: ZD - add click handler for artist buttons.
 
     // Utility function
     function GetTicketOfferUrl(event) {
