@@ -256,11 +256,11 @@ $(document).ready(function () {
     // Find the first available tickets url in the event object returned by bandsintown API
     function GetTicketOfferUrl(event) {
         var offer;
-        var urlHtml = "<i class='material-icons'>not_interested</i>";
+        var urlHtml = "<i class='material-icons'>clear</i>";
         for (var i = 0; i < event.offers.length; i++) {
             offer = event.offers[i];
             if ((offer.type === "Tickets") && (offer.status === "available")) {
-                urlHtml = "<a target='_blank' href='" + offer.url + "'><i class='material-icons'>queue_music</i></a>";
+                urlHtml = "<a target='_blank' title='get tickets' href='" + offer.url + "'><i class='material-icons'>queue_music</i></a>";
             }
         }
 
