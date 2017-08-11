@@ -121,6 +121,7 @@ $(document).ready(function () {
                 if (response.length === 0) {
                     // in case there are no events
                     $("#events-table-header").html("<tr><th colspan=4>No upcoming events</th></tr>");
+                    $("#mapbox").html("<p>No map data to display</p>");
                 }
                 else {
                     // there are some events -- put a table header
@@ -144,22 +145,19 @@ $(document).ready(function () {
                 //////////////////////////////////////////////////////////////////////////////
                 // THIS IS WHERE MAP STUFF HAPPENS -- IF THERE ARE ANY EVENTS FOR THIS ARTIST
                 //////////////////////////////////////////////////////////////////////////////
-                if (Events.length > 0) {
-                    //Create geojson data ppints for markers
-                    var venueName = event.venue.name;
-                    var venueCity = event.venue.city;
-                    var venueRegion = event.venue.region;
-                    var venueLat = event.venue.latitude;
-                    var venueLong = event.venue.longitude;
+                //Add the map to the DOM
+                mapboxgl.accessToken = "pk.eyJ1Ijoic2NvdHRqYWMwMSIsImEiOiJjajYxamFzdmkwdmNlMndvMzNsam00ZG1oIn0.u5dRjgnkQLTHRcKuxB-KkQ";
+                var mapbox = new mapboxgl.Map({
+                    container: "mapbox",
+                    style: "mapbox://styles/mapbox/streets-v9",
+                    center: [Events[0].venue.longitude, Events[0].venue.latitude],
+                    zoom: 3
+                });
 
-                    //Add the map to the DOM
-                    mapboxgl.accessToken = "pk.eyJ1Ijoic2NvdHRqYWMwMSIsImEiOiJjajYxamFzdmkwdmNlMndvMzNsam00ZG1oIn0.u5dRjgnkQLTHRcKuxB-KkQ";
-                    var mapbox = new mapboxgl.Map({
-                        container: "mapbox",
-                        style: "mapbox://styles/mapbox/streets-v9",
-                        center: [venueLong, venueLat],
-                        zoom: 5
-                    });
+                if (Events.length > 0) {
+                    for (var i = 0; i < Events.length; i++) {                    
+                    console.log(Events);
+
                     //Create the geojson for the map w/markers and popups
                     var geojson = {
                         type: "FeatureCollection",
@@ -167,40 +165,34 @@ $(document).ready(function () {
                             type: "Feature",
                             geometry: {
                                 type: "Point",
-                                coordinates: [venueLong, venueLat]
-                            },
-                            properties: {
-                                title: venueName,
-                                description: venueCity + "," + venueRegion
-                            }
-                        },
-                            {
-                                type: 'Feature',
-                                geometry: {
-                                    type: 'Point',
-                                    coordinates: [-122.414, 37.776]
+                                coordinates: [Events[i].venue.longitude, Events[i].venue.latitude]
                                 },
-                                properties: {
-                                    title: 'Mapbox',
-                                    description: 'San Francisco, California'
-                                }
-                            }]
+                            properties: {
+                                title: Events[i].venue.name,
+                                description: Events[i].venue.city + "," + Events[i].venue.region,
+                                "marker-color": "#3bb2d0",
+                                "marker-size": "small",
+                                "marker-symbol": Events.length
+                            }
+                        }]
                     };
-                    // add markers to map
-                    geojson.features.forEach(function (marker) {
 
-                        // create a HTML element for each feature
-                        var el = document.createElement("div");
-                        el.className = "marker";
+                            // add markers to map                            
+                           geojson.features.forEach(function (marker) {
 
-                        // make a marker for each feature and add to the map
-                        new mapboxgl.Marker(el, {offset: [-50 / 2, -50 / 2]})
-                            .setLngLat(marker.geometry.coordinates)
-                            .setPopup(new mapboxgl.Popup({offset: 5}) // add popups
+                            // create a HTML element for each feature
+                            var el = document.createElement("div");
+                            el.className = "marker";
+
+                            // make a marker for each feature and add to the map
+                            new mapboxgl.Marker(el)
+                                .setLngLat(marker.geometry.coordinates)
+                                .setPopup(new mapboxgl.Popup() // add popups
                                 .setHTML("<h5>" + marker.properties.title + "</h5><p>" + marker.properties.description + "</p>"))
-                            .addTo(mapbox);
-                    });
-                }
+                                .addTo(mapbox);
+                            });
+                        }
+                    }
                 ////////////////////
                 // END OF MAP STUFF
                 ////////////////////
