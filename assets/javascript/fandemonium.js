@@ -32,9 +32,10 @@ $(document).ready(function () {
     // When user clicks "search" button, add a new artist to firebase (assuming it doesn't already
     // exist in the db) and get info from bandsintown about artist and upcoming events and use the info
     // to populate the screen sections like map, artist links, etc.
-    $("#search-events").on("click", function () {
+    $("#search-events").unbind('click').click(function(e) {
 
-        event.preventDefault();
+        e.preventDefault();
+        e.stopPropagation();
         $('.social-links').empty();
 
         var bandId;  // used with musicgraph API
@@ -132,7 +133,7 @@ $(document).ready(function () {
                         Events[i] = JSON.parse(JSON.stringify(response[i]));
 
                         // add a row to the on-screen events table
-                        $("#events-table-body").append("<tr><td>" + event.datetime + "</td>" +
+                        $("#events-table-body").append("<tr><td>" + moment(event.datetime).format('LLL') + "</td>" +
                             "<td>" + event.venue.city + ", " + event.venue.region + ", " + event.venue.country + "</td>" +
                             "<td>" + event.venue.name + "</td>" +
                             "<td>" + GetTicketOfferUrl(event) + "</td></tr>");
@@ -239,7 +240,7 @@ $(document).ready(function () {
 
     // Click handler for artist buttons at the top.
     // They act as if the user entered the artist name in
-    // form field and clicked "search"
+    // the form field and clicked "Search"
     $(document).on("click", ".artist-button", function(){
         var clickedArtist = $(this).attr("data-artist");
 
@@ -255,11 +256,11 @@ $(document).ready(function () {
     // Find the first available tickets url in the event object returned by bandsintown API
     function GetTicketOfferUrl(event) {
         var offer;
-        var urlHtml = "None";
+        var urlHtml = "<i class='material-icons'>not_interested</i>";
         for (var i = 0; i < event.offers.length; i++) {
             offer = event.offers[i];
             if ((offer.type === "Tickets") && (offer.status === "available")) {
-                urlHtml = "<a target='_blank' href='" + offer.url + "'><img src='assets/images/ticket.png' height='10'></a>";
+                urlHtml = "<a target='_blank' href='" + offer.url + "'><i class='material-icons'>queue_music</i></a>";
             }
         }
 
