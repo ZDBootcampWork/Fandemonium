@@ -299,9 +299,9 @@ $(document).ready(function () {
     displayTime();
 
     function displayTime() {
-        var time = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
+        var time = moment().format("dddd, MMMM Do YYYY, h:mm a");
         $("#currClock").html(time);
-        setTimeout(displayTime, 1000);
+        setTimeout(displayTime, 60000);
     }
 
 });
