@@ -48,13 +48,13 @@ img {
 }
 
 .mapboxgl-popup {
-  max-width: px;
+  max-width: 60px;
 }
 
 .mapboxgl-popup-content {
   text-align: center;
   font-family: "Open Sans", sans-serif;
-  font-size: 9;
+  font-size: 9px;
 }
 .modal-backdrop.fade.in {
   z-index: 0;
@@ -65,4 +65,5 @@ img {
 
 .artist-button {
     margin: 3px;
+    background-color: #38404b;
 }
