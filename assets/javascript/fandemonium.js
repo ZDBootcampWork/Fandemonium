@@ -81,7 +81,7 @@ $(document).ready(function () {
 
         // AJAX call to musicgraph to get band ID
         $.ajax({
-            url: "http://api.musicgraph.com/api/v2/artist/suggest?api_key=" + musicGraphKey + "&prefix=" + artist + "&limit=1",
+            url: "https://cors-anywhere.herokuapp.com/http://api.musicgraph.com/api/v2/artist/suggest?api_key=" + musicGraphKey + "&prefix=" + artist + "&limit=1",
             method: 'GET'
         })
             .done(function (response) {
@@ -130,7 +130,7 @@ $(document).ready(function () {
 
                     // Once we got band id, we make another ajax call to musicgraph to get social URLs for the artist
                     $.ajax({
-                        url: "http://api.musicgraph.com/api/v2/artist/" + bandId + "/social-urls?api_key=" + musicGraphKey,
+                        url: "https://cors-anywhere.herokuapp.com/http://api.musicgraph.com/api/v2/artist/" + bandId + "/social-urls?api_key=" + musicGraphKey,
                         method: 'GET'
                     })
                         .done(function (response) {
