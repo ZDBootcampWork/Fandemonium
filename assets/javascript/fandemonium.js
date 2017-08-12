@@ -127,7 +127,18 @@ $(document).ready(function () {
             .done(function (response) {
                 // hide div first
                 $(".social-div").hide();
-                bandId = response.data[0].id;
+                
+                //Handle if no artist or bandId is found//
+                if(response.data.length != 0){
+                    bandId = response.data[0].id;
+                }else{
+                    bootbox.alert({
+                    message: "The Artist name " + artist + "was not found!",
+                    size: 'small'
+                    });
+                }
+                //End If//
+
                 // Once we got band id, we make another ajax call to get social URLs for the artist
                 $.ajax({
                     url: "http://api.musicgraph.com/api/v2/artist/" + bandId + "/social-urls?api_key=" + musicGraphKey,
@@ -172,6 +183,7 @@ $(document).ready(function () {
                 // THIS IS THE PART THAT POPULATES THE EVENTS TABLE ON SCREEN
                 // Clear the table body rows
                 $("#events-table-body tr").remove();
+                $("#mapbox").empty();
 
                 if (response.length === 0) {
                     // in case there are no events

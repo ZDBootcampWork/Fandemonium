@@ -9,6 +9,10 @@ th {
     color: white;
 }
 
+.full {
+    background: url('../images/background.jpg') no-repeat center center fixed;
+    background-size: cover;
+  }
 .panel-transparent {
     background: none;
 }
