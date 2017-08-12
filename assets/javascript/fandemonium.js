@@ -45,14 +45,26 @@ $(document).ready(function () {
 
         var bandId;  // used with musicgraph API
         var artist = $("#artist-input").val().trim();
+        var startDate = $("#start-date-input").val().trim();
+        var endDate = $("#end-date-input").val().trim();
+
+
+        if (artist === "") {
+            bootbox.alert("Please enter an artist name.");
+        }
+
+        if (startDate ==="" && endDate != "") {
+            startDate = moment().format("YYYY-MM-DD");
+
+        }
+
         
         $(".events-heading").html(artist + " - Upcoming Shows");
         $(".events-div").show();
 
         //TODO: validate input here for dates if entered - use modals for error messages
 
-        var startDate = $("#start-date-input").val().trim();
-        var endDate = $("#end-date-input").val().trim();
+        
         var parsedStart = moment(startDate).format("YYYY-MM-DD")
         var parsedEnd = moment(endDate).format("YYYY-MM-DD")
         var parsedRange = parsedStart+","+parsedEnd;
