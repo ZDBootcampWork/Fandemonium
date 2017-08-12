@@ -21,6 +21,11 @@ var Events = [];
 
 $(document).ready(function () {
     var $artistButtons = $("#my-artists-buttons");
+    $('.input-daterange').datepicker({
+    autoclose: true,
+    todayHighlight: true,
+    toggleActive: true
+    });
     $artistButtons.empty();
     // hide social div and events div on initial page load
     $(".social-div").hide();
@@ -40,13 +45,20 @@ $(document).ready(function () {
 
         var bandId;  // used with musicgraph API
         var artist = $("#artist-input").val().trim();
-        var startDate = $("#start-date-input").val().trim();
-        var endDate = $("#end-date-input").val().trim();
-
+        
         $(".events-heading").html(artist + " - Upcoming Shows");
         $(".events-div").show();
 
-        // TODO: validate input here for dates if entered - use modals for error messages
+        //TODO: validate input here for dates if entered - use modals for error messages
+
+        var startDate = $("#start-date-input").val().trim();
+        var endDate = $("#end-date-input").val().trim();
+        var parsedStart = moment(startDate).format("YYYY-MM-DD")
+        var parsedEnd = moment(endDate).format("YYYY-MM-DD")
+        var parsedRange = parsedStart+","+parsedEnd;
+        console.log(parsedRange);
+
+
 
         // Put the searched artist in DB - Need to check for dup's before adding to DB
         database.ref().orderByChild("artist").equalTo(toTitleCase(artist)).once("value", function (snapshot) {
@@ -103,9 +115,9 @@ $(document).ready(function () {
         // Call bandsintown API to get upcoming events for this artist (if any)
         $.ajax({
             // TODO: if dates are entered url looks like this
-            // url: "https://rest.bandsintown.com/artists/" + $("#search-term").val().trim + "/events?app_id=UNC-CH-Bootcamp&date=" + "2017-08-19%2C2017-09-10",
+            url: "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=UNC-CH-Bootcamp&date=" + parsedRange,
             // No dates entered
-            url: "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=UNC-CH-bootcamp",
+            // url: "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=UNC-CH-bootcamp",
             method: 'GET'
         })
             .done(function (response) {
