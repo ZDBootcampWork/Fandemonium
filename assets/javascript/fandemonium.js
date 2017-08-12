@@ -22,9 +22,9 @@ var Events = [];
 $(document).ready(function () {
     var $artistButtons = $("#my-artists-buttons");
     $('.input-daterange').datepicker({
-    autoclose: true,
-    todayHighlight: true,
-    toggleActive: true
+        autoclose: true,
+        todayHighlight: true,
+        toggleActive: true
     });
     $artistButtons.empty();
     // hide social div and events div on initial page load
@@ -55,19 +55,15 @@ $(document).ready(function () {
         // var bandsInTownUrl;
         // var artistSearchUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=UNC-CH-bootcamp";
         // var dateSearchUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=UNC-CH-Bootcamp&date=" + parsedRange;
-        
+
 
         if (artist === "") {
             bootbox.alert({
-                    message: "Please enter an artist name.",
-                    size: 'small'
-                    });
+                message: "Please enter an artist name.",
+                size: 'small'
+            });
             return;
         }
-
-        // if (startDate ==="" && endDate ==="") {
-        //     bandsInTownUrl = artistSearchUrl;
-        // }
 
         if (startDate ==="") {
             startDate = moment().format("YYYY-MM-DD");
@@ -75,35 +71,25 @@ $(document).ready(function () {
         }
 
         if (endDate === "") {
-            endDate = moment().add(2, 'y').format("YYYY-MM-DD");
+            endDate = moment().add(5, 'y').format("YYYY-MM-DD");
             // bandsInTownUrl = dateSearchUrl;
         }
 
-        // if (startDate != "" && endDate != "") {
-        //     endDate = moment(startDate).add(2, 'y').format("YYYY-MM-DD");
-        //     bandsInTownUrl = dateSearchUrl;
-        // }
-
         if (moment(endDate).isBefore(startDate)) {
             bootbox.alert({
-                    message: "Invalid date range.  Please try again.",
-                    size: 'small'
-                    });
+                message: "Invalid date range.  Please try again.",
+                size: 'small'
+            });
             return;
-
         }
 
-        var parsedStart = moment(startDate).format("YYYY-MM-DD")
-        var parsedEnd = moment(endDate).format("YYYY-MM-DD")
+        var parsedStart = moment(startDate).format("YYYY-MM-DD");
+        var parsedEnd = moment(endDate).format("YYYY-MM-DD");
         var parsedRange = parsedStart+","+parsedEnd;
         var bandsInTownUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=UNC-CH-Bootcamp&date=" + parsedRange;
 
         $(".events-heading").html(artist + " - Upcoming Shows");
         $(".events-div").show();
-
-        //TODO: validate input here for dates if entered - use modals for error messages
-
-
 
         // Put the searched artist in DB - Need to check for dup's before adding to DB
         database.ref().orderByChild("artist").equalTo(toTitleCase(artist)).once("value", function (snapshot) {
@@ -127,14 +113,14 @@ $(document).ready(function () {
             .done(function (response) {
                 // hide div first
                 $(".social-div").hide();
-                
+
                 //Handle if no artist or bandId is found//
                 if(response.data.length != 0){
                     bandId = response.data[0].id;
                 }else{
                     bootbox.alert({
-                    message: "The Artist name " + artist + "was not found!",
-                    size: 'small'
+                        message: "The Artist name " + artist + "was not found!",
+                        size: 'small'
                     });
                 }
                 //End If//
@@ -222,30 +208,30 @@ $(document).ready(function () {
                 });
 
                 if (Events.length > 0) {
-                    for (var i = 0; i < Events.length; i++) {                    
-                    console.log(Events);
+                    for (var i = 0; i < Events.length; i++) {
+                        console.log(Events);
 
-                    //Create the geojson for the map w/markers and popups
-                    var geojson = {
-                        type: "FeatureCollection",
-                        features: [{
-                            type: "Feature",
-                            geometry: {
-                                type: "Point",
-                                coordinates: [Events[i].venue.longitude, Events[i].venue.latitude]
+                        //Create the geojson for the map w/markers and popups
+                        var geojson = {
+                            type: "FeatureCollection",
+                            features: [{
+                                type: "Feature",
+                                geometry: {
+                                    type: "Point",
+                                    coordinates: [Events[i].venue.longitude, Events[i].venue.latitude]
                                 },
-                            properties: {
-                                title: Events[i].venue.name,
-                                description: Events[i].venue.city + "," + Events[i].venue.region,
-                                "marker-color": "#3bb2d0",
-                                "marker-size": "small",
-                                "marker-symbol": Events.length
-                            }
-                        }]
-                    };
+                                properties: {
+                                    title: Events[i].venue.name,
+                                    description: Events[i].venue.city + "," + Events[i].venue.region,
+                                    "marker-color": "#3bb2d0",
+                                    "marker-size": "small",
+                                    "marker-symbol": Events.length
+                                }
+                            }]
+                        };
 
-                            // add markers to map                            
-                           geojson.features.forEach(function (marker) {
+                        // add markers to map
+                        geojson.features.forEach(function (marker) {
 
                             // create a HTML element for each feature
                             var el = document.createElement("div");
@@ -255,11 +241,11 @@ $(document).ready(function () {
                             new mapboxgl.Marker(el)
                                 .setLngLat(marker.geometry.coordinates)
                                 .setPopup(new mapboxgl.Popup() // add popups
-                                .setHTML("<h5>" + marker.properties.title + "</h5><p>" + marker.properties.description + "</p>"))
+                                    .setHTML("<h5>" + marker.properties.title + "</h5><p>" + marker.properties.description + "</p>"))
                                 .addTo(mapbox);
-                            });
-                        }
+                        });
                     }
+                }
                 ////////////////////
                 // END OF MAP STUFF
                 ////////////////////
