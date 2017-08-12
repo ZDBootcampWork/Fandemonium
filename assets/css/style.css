@@ -12,7 +12,8 @@ th {
 .full {
     background: url('../images/background.jpg') no-repeat center center fixed;
     background-size: cover;
-  }
+}
+
 .panel-transparent {
     background: none;
 }
@@ -34,7 +35,6 @@ th {
     font-weight: bold;
 }
 
-
 img {
     margin: 5px 5px;
     padding: 3px;
@@ -43,12 +43,12 @@ img {
 
 /* for the maps markers and popups*/
 .marker {
-  background-image: url("../images/rocket-15.svg");
-  background-size: cover;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  cursor: pointer;
+    background-image: url("../images/rocket-15.svg");
+    background-size: cover;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    cursor: pointer;
 }
 
 .mapboxgl-popup {
@@ -57,13 +57,15 @@ img {
 }
 
 .mapboxgl-popup-content {
-  text-align: center;
-  font-family: "Open Sans", sans-serif;
-  font-size: 9px;
+    text-align: center;
+    font-family: "Open Sans", sans-serif;
+    font-size: 9px;
 }
+
 .modal-backdrop.fade.in {
-  z-index: 0;
+    z-index: 0;
 }
+
 .modal-dialog {
     margin-top: 10%;
 }
