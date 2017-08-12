@@ -43,32 +43,65 @@ $(document).ready(function () {
         e.stopPropagation();
         $('.social-links').empty();
 
-        var bandId;  // used with musicgraph API
         var artist = $("#artist-input").val().trim();
         var startDate = $("#start-date-input").val().trim();
         var endDate = $("#end-date-input").val().trim();
+        // var parsedStart = moment(startDate).format("YYYY-MM-DD")
+        // var parsedEnd = moment(endDate).format("YYYY-MM-DD")
+        // var parsedRange = parsedStart+","+parsedEnd;
 
+
+        var bandId;  // used with musicgraph API
+        // var bandsInTownUrl;
+        // var artistSearchUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=UNC-CH-bootcamp";
+        // var dateSearchUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=UNC-CH-Bootcamp&date=" + parsedRange;
+        
 
         if (artist === "") {
-            bootbox.alert("Please enter an artist name.");
+            bootbox.alert({
+                    message: "Please enter an artist name.",
+                    size: 'small'
+                    });
+            return;
         }
 
-        if (startDate ==="" && endDate != "") {
+        // if (startDate ==="" && endDate ==="") {
+        //     bandsInTownUrl = artistSearchUrl;
+        // }
+
+        if (startDate ==="") {
             startDate = moment().format("YYYY-MM-DD");
+            // bandsInTownUrl = dateSearchUrl;
+        }
+
+        if (endDate === "") {
+            endDate = moment().add(2, 'y').format("YYYY-MM-DD");
+            // bandsInTownUrl = dateSearchUrl;
+        }
+
+        // if (startDate != "" && endDate != "") {
+        //     endDate = moment(startDate).add(2, 'y').format("YYYY-MM-DD");
+        //     bandsInTownUrl = dateSearchUrl;
+        // }
+
+        if (moment(endDate).isBefore(startDate)) {
+            bootbox.alert({
+                    message: "Invalid date range.  Please try again.",
+                    size: 'small'
+                    });
+            return;
 
         }
 
-        
+        var parsedStart = moment(startDate).format("YYYY-MM-DD")
+        var parsedEnd = moment(endDate).format("YYYY-MM-DD")
+        var parsedRange = parsedStart+","+parsedEnd;
+        var bandsInTownUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=UNC-CH-Bootcamp&date=" + parsedRange;
+
         $(".events-heading").html(artist + " - Upcoming Shows");
         $(".events-div").show();
 
         //TODO: validate input here for dates if entered - use modals for error messages
-
-        
-        var parsedStart = moment(startDate).format("YYYY-MM-DD")
-        var parsedEnd = moment(endDate).format("YYYY-MM-DD")
-        var parsedRange = parsedStart+","+parsedEnd;
-        console.log(parsedRange);
 
 
 
@@ -127,9 +160,8 @@ $(document).ready(function () {
         // Call bandsintown API to get upcoming events for this artist (if any)
         $.ajax({
             // TODO: if dates are entered url looks like this
-            url: "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=UNC-CH-Bootcamp&date=" + parsedRange,
+            url: bandsInTownUrl,
             // No dates entered
-            // url: "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=UNC-CH-bootcamp",
             method: 'GET'
         })
             .done(function (response) {
