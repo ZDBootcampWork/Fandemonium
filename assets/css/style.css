@@ -1,7 +1,12 @@
 /* Common items */
+/** { border: 1px solid red; }*/
 body {
-    font-family: 'Lemonada', cursive;
+    font-family: 'Open sans', sans-serif;;
     font-size: 14px;
+}
+
+html, body { 
+  overflow-x: hidden; 
 }
 
 th {
@@ -10,12 +15,12 @@ th {
 }
 
 .full {
-    background: url('../images/background.jpg') no-repeat center center fixed;
+    background: url('../images/MSG1631.png') no-repeat center fixed;
     background-size: cover;
   }
-.panel-transparent {
+/*.panel-transparent {
     background: none;
-}
+}*/
 
 /* Overriding some bootstrap styles here */
 /* Make the jumbotron fonts smaller */
@@ -27,11 +32,18 @@ th {
 }
 
 .jumbotron h1 {
-    font-size: 40px;
-    line-height: 50px;
+    font-family: 'Muli', sans-serif;
+    font-weight: 200;
+    font-size: 300%;
+    letter-spacing: 15px;
+  /*  line-height: 50px;*/
     margin-top: 0;
     margin-bottom: 0;
-    font-weight: bold;
+    /*font-weight: bold;*/
+}
+
+.jumbotron p {
+  font-size: 20px;
 }
 
 
