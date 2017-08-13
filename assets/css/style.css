@@ -3,6 +3,9 @@
 body {
     font-family: 'Open sans', sans-serif;;
     font-size: 14px;
+    background-image: url("../images/concert-crowd.png");
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 html, body { 
@@ -18,15 +21,21 @@ th {
     background: url('../images/MSG1631.png') no-repeat center fixed;
     background-size: cover;
   }
-/*.panel-transparent {
-    background: none;
-}*/
+
 
 /* Overriding some bootstrap styles here */
 /* Make the jumbotron fonts smaller */
+.panel-default>.panel-heading {
+    background-color: #38404b;
+}
+
+.btn-primary {
+    background-color: #38404b;
+}
+
 .jumbotron {
     padding: 10px;
-    background-color: #2e73b8;
+    background-color: #38404b;
     color: white;
     margin-bottom: 0;
 }
@@ -46,7 +55,7 @@ th {
   font-size: 20px;
 }
 
-
+/* Other styling */
 img {
     margin: 5px 5px;
     padding: 3px;
@@ -54,13 +63,20 @@ img {
 }
 
 /* for the maps markers and popups*/
+div#mapbox {
+    border: solid;
+    border-width: 1px;
+    border-color: royalblue;
+    border-radius: 5px;
+}
+
 .marker {
-  background-image: url("../images/rocket-15.svg");
-  background-size: cover;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  cursor: pointer;
+    background-image: url("../images/rocket-15.svg");
+    background-size: cover;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    cursor: pointer;
 }
 
 .mapboxgl-popup {
@@ -69,18 +85,32 @@ img {
 }
 
 .mapboxgl-popup-content {
-  text-align: center;
-  font-family: "Open Sans", sans-serif;
-  font-size: 9px;
+    text-align: center;
+    font-family: "Open Sans", sans-serif;
+    font-size: 9px;
 }
+
 .modal-backdrop.fade.in {
-  z-index: 0;
+    z-index: 0;
 }
+
 .modal-dialog {
     margin-top: 10%;
 }
 
+/* for artist buttons */
 .artist-button {
     margin: 3px;
     background-color: #38404b;
+}
+
+.artist-button:hover {
+    background-color: #38404b;
+}
+
+/* no concerts message in map div */
+p#no-map {
+    text-align: center;
+    font-size: 16px;
+    margin: 20px;
 }
