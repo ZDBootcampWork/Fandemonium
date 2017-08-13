@@ -57,7 +57,7 @@ img {
 }
 
 /* for the maps markers and popups*/
-div#mapbox {
+div.mapbox {
     border: solid;
     border-width: 1px;
     border-color: royalblue;
@@ -104,7 +104,7 @@ div#mapbox {
 }
 
 /* no concerts message in map div */
-p#no-map {
+b.no-map {
     text-align: center;
     font-size: 16px;
     margin: 20px;
