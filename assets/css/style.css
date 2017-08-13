@@ -2,16 +2,14 @@
 body {
     font-family: 'Lemonada', cursive;
     font-size: 14px;
+    background-image: url("../images/concert-crowd.png");
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 th {
     background-color: #38404b;
     color: white;
-}
-
-.full {
-    background: url('../images/background.jpg') no-repeat center center fixed;
-    background-size: cover;
 }
 
 .panel-transparent {
@@ -20,9 +18,17 @@ th {
 
 /* Overriding some bootstrap styles here */
 /* Make the jumbotron fonts smaller */
+.panel-default>.panel-heading {
+    background-color: #38404b;
+}
+
+.btn-primary {
+    background-color: #38404b;
+}
+
 .jumbotron {
     padding: 10px;
-    background-color: #2e73b8;
+    background-color: #38404b;
     color: white;
     margin-bottom: 0;
 }
@@ -35,6 +41,7 @@ th {
     font-weight: bold;
 }
 
+/* Other styling */
 img {
     margin: 5px 5px;
     padding: 3px;
@@ -72,5 +79,9 @@ img {
 
 .artist-button {
     margin: 3px;
+    background-color: #38404b;
+}
+
+.artist-button:hover {
     background-color: #38404b;
 }
