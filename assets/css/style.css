@@ -53,6 +53,7 @@ div#mapbox {
     border: solid;
     border-width: 1px;
     border-color: royalblue;
+    border-radius: 5px;
 }
 
 .marker {
