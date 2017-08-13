@@ -57,6 +57,14 @@ img {
 }
 
 /* for the maps markers and popups*/
+div#mapbox {
+    border: solid;
+    border-width: 1px;
+    border-color: royalblue;
+    border-radius: 5px;
+}
+
+
 .marker {
     background-image: url("../images/rocket-15.svg");
     background-size: cover;
@@ -93,4 +101,11 @@ img {
 
 .artist-button:hover {
     background-color: #38404b;
+}
+
+/* no concerts message in map div */
+p#no-map {
+    text-align: center;
+    font-size: 16px;
+    margin: 20px;
 }
