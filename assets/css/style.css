@@ -1,10 +1,12 @@
 /* Common items */
 body {
-    font-family: 'Lemonada', cursive;
+    font-family: 'Open sans', sans-serif;;
     font-size: 14px;
-    background-image: url("../images/concert-crowd.png");
-    background-position: center;
-    background-repeat: no-repeat;
+}
+
+/*hack to overcome a small ccolumn that was appearing on the right side of the sccreen*/
+html, body {
+    overflow-x: hidden;
 }
 
 th {
@@ -12,36 +14,42 @@ th {
     color: white;
 }
 
-.panel-transparent {
-    background: none;
+/*new background image*/
+.full {
+    background: url('../images/concert.png') no-repeat center fixed;
+    background-size: cover;
 }
+
+/*.panel-transparent {
+    background: none;
+}*/
 
 /* Overriding some bootstrap styles here */
 /* Make the jumbotron fonts smaller */
-.panel-default>.panel-heading {
-    background-color: #38404b;
-}
-
-.btn-primary {
-    background-color: #38404b;
-}
-
 .jumbotron {
     padding: 10px;
-    background-color: #38404b;
+    background-color: #2e73b8;
     color: white;
     margin-bottom: 0;
 }
 
+/*changes to jumbotron heading*/
 .jumbotron h1 {
-    font-size: 40px;
-    line-height: 50px;
+    font-family: 'Muli', sans-serif;
+    font-weight: 200;
+    font-size: 300%;
+    letter-spacing: 15px;
+    /*  line-height: 50px;*/
     margin-top: 0;
     margin-bottom: 0;
-    font-weight: bold;
+    /*font-weight: bold;*/
 }
 
-/* Other styling */
+/*styling tagline*/
+.jumbotron p {
+    font-size: 20px;
+}
+
 img {
     margin: 5px 5px;
     padding: 3px;
@@ -49,13 +57,6 @@ img {
 }
 
 /* for the maps markers and popups*/
-div#mapbox {
-    border: solid;
-    border-width: 1px;
-    border-color: royalblue;
-    border-radius: 5px;
-}
-
 .marker {
     background-image: url("../images/rocket-15.svg");
     background-size: cover;
@@ -84,7 +85,7 @@ div#mapbox {
     margin-top: 10%;
 }
 
-/* for artist buttons */
+/* artist buttons styling */
 .artist-button {
     margin: 3px;
     background-color: #38404b;
@@ -92,11 +93,4 @@ div#mapbox {
 
 .artist-button:hover {
     background-color: #38404b;
-}
-
-/* no concerts message in map div */
-p#no-map {
-    text-align: center;
-    font-size: 16px;
-    margin: 20px;
 }
