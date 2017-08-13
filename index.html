@@ -62,7 +62,7 @@
     </div>
     <div class="row">
         <!-- search form -->
-        <div class="col-6">
+        <div class="col-md-12">
             <div class="panel panel-default panel-primary panel-transparent">
                 <div class="panel-heading">
                     <b>Search Events</b>
@@ -71,23 +71,31 @@
                 </div>
                 <div class="panel-body">
                     <form>
+                        <div class="row">
                         <!-- new form -->
-                        <div class="form-group">
-                            <label for="artist-input" class="col-1 control-label">Artist</label>
-                            <div class="col-2">
-                                <input class="form-control" id="artist-input" type="text">
-                            </div>
-                            <label for="start-date-input" class="col-2 control-label">Dates(Optional)</label>
-                            <div class="input-daterange input-group col-4" id="datepicker">
-                                <input type="text" class="input-sm form-control" id="start-date-input" name="start"
-                                       placeholder="Start date"/>
-                                <div class="input-group-addon">to</div>
-                                <input type="text" class="input-sm form-control" id="end-date-input" name="end"
-                                       placeholder="End date"/>
-                            </div>
-                            <div class="col-1">
-                                <button class="btn btn-default btn-primary" id="search-events">Search</button>
-                            </div>
+                            <!-- <div class="form-group"> -->
+                                <div class="col-md-1">
+                                    <label for="artist-input" class="control-label">Artist</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input class="form-control" id="artist-input" type="text">
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="start-date-input" class="control-label">Dates (Optional)</label>
+                                </div>
+                                <div class="input-daterange col-md-2">
+                                    <input type="text" class="input-sm form-control col-md-2" id="start-date-input" name="start"
+                                           placeholder="Start date"/>
+                                </div>
+                                
+                                <div class="input-daterange col-md-2">
+                                    <input type="text" class="input-sm form-control col-md-2" id="end-date-input" name="end"
+                                           placeholder="End date"/>      
+                                </div>
+
+                                <div class="col-md-2">
+                                    <button class="btn btn-default btn-primary" style="width:140px" id="search-events">Search</button>
+                                </div>                              
                         </div>
                     </form>
                 </div>
