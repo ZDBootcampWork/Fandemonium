@@ -27,9 +27,10 @@ $(document).ready(function () {
         toggleActive: true
     });
     $artistButtons.empty();
-    // hide social div and events div on initial page load
+    // hide social div and events div and map div on initial page load
     $(".social-div").hide();
     $(".events-div").hide();
+    $("#mapbox").hide();
 
     //////////////////////////////////////////////////////////////////////////////////////////////////
     // THIS IS THE MAIN CLICK HANDLER -- A LOT OF THINGS HAPPEN WHEN USER ENTERS ARTIST NAME
@@ -183,7 +184,7 @@ $(document).ready(function () {
                             if (response.length === 0) {
                                 // in case there are no events
                                 $("#events-table-header").html("<tr><th colspan=4>No upcoming events</th></tr>");
-                                $("#mapbox").html("<p>No map data to display</p>");
+                                $("#mapbox").html("<p id='no-map'>Sorry, no " + artist + " concerts are scheduled at this time. Please check back soon.</p>");
                             }
                             else {
                                 // there are some events -- put a table header
@@ -208,6 +209,7 @@ $(document).ready(function () {
                             // THIS IS WHERE MAP STUFF HAPPENS -- IF THERE ARE ANY EVENTS FOR THIS ARTIST
                             //////////////////////////////////////////////////////////////////////////////
                             //Add the map to the DOM
+                            $("#mapbox").show();
                             if (Events.length > 0) {
                                 mapboxgl.accessToken = "pk.eyJ1Ijoic2NvdHRqYWMwMSIsImEiOiJjajYxamFzdmkwdmNlMndvMzNsam00ZG1oIn0.u5dRjgnkQLTHRcKuxB-KkQ";
                                 var mapbox = new mapboxgl.Map({
@@ -217,7 +219,7 @@ $(document).ready(function () {
                                     zoom: 3
                                 });
 
-                                console.log(Events);
+                                //console.log(Events);
 
                                 for (var i = 0; i < Events.length; i++) {
                                     //Create the geojson for the map w/markers and popups
