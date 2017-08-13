@@ -30,7 +30,7 @@ $(document).ready(function () {
     // hide social div and events div and map div on initial page load
     $(".social-div").hide();
     $(".events-div").hide();
-    $("#mapbox").hide();
+    $(".map-div").hide();
 
     //////////////////////////////////////////////////////////////////////////////////////////////////
     // THIS IS THE MAIN CLICK HANDLER -- A LOT OF THINGS HAPPEN WHEN USER ENTERS ARTIST NAME
@@ -179,12 +179,12 @@ $(document).ready(function () {
                             // THIS IS THE PART THAT POPULATES THE EVENTS TABLE ON SCREEN
                             // Clear the table body rows
                             $("#events-table-body tr").remove();
-                            $("#mapbox").empty();
+                            //$("#mapbox").empty();
 
                             if (response.length === 0) {
                                 // in case there are no events
                                 $("#events-table-header").html("<tr><th colspan=4>No upcoming events</th></tr>");
-                                $("#mapbox").html("<p id='no-map'>Sorry, no " + artist + " concerts are scheduled at this time. Please check back soon.</p>");
+                                $(".no-map").text("Sorry, no " + artist + " concerts are scheduled at this time. Please check back soon.");
                             }
                             else {
                                 // there are some events -- put a table header
@@ -209,7 +209,7 @@ $(document).ready(function () {
                             // THIS IS WHERE MAP STUFF HAPPENS -- IF THERE ARE ANY EVENTS FOR THIS ARTIST
                             //////////////////////////////////////////////////////////////////////////////
                             //Add the map to the DOM
-                            $("#mapbox").show();
+                            $(".map-div").show();
                             if (Events.length > 0) {
                                 mapboxgl.accessToken = "pk.eyJ1Ijoic2NvdHRqYWMwMSIsImEiOiJjajYxamFzdmkwdmNlMndvMzNsam00ZG1oIn0.u5dRjgnkQLTHRcKuxB-KkQ";
                                 var mapbox = new mapboxgl.Map({
@@ -218,6 +218,7 @@ $(document).ready(function () {
                                     center: [Events[0].venue.longitude, Events[0].venue.latitude],
                                     zoom: 3
                                 });
+                                $(".no-map").text("Locations of Upcoming Events");
 
                                 //console.log(Events);
 
@@ -252,7 +253,7 @@ $(document).ready(function () {
                                         new mapboxgl.Marker(el)
                                             .setLngLat(marker.geometry.coordinates)
                                             .setPopup(new mapboxgl.Popup() // add popups
-                                                .setHTML("<h5>" + marker.properties.title + "</h5><p>" + marker.properties.description + "</p>"))
+                                            .setHTML("<h5>" + marker.properties.title + "</h5><p>" + marker.properties.description + "</p>"))
                                             .addTo(mapbox);
                                     });
                                 }
