@@ -183,8 +183,8 @@ $(document).ready(function () {
 
                             if (response.length === 0) {
                                 // in case there are no events
+                                $(".map-div").hide();
                                 $("#events-table-header").html("<tr><th colspan=4>No upcoming events</th></tr>");
-                                $(".no-map").text("Sorry, no " + artist + " concerts are scheduled at this time. Please check back soon.");
                             }
                             else {
                                 // there are some events -- put a table header
@@ -209,8 +209,9 @@ $(document).ready(function () {
                             // THIS IS WHERE MAP STUFF HAPPENS -- IF THERE ARE ANY EVENTS FOR THIS ARTIST
                             //////////////////////////////////////////////////////////////////////////////
                             //Add the map to the DOM
-                            $(".map-div").show();
                             if (Events.length > 0) {
+                                // show the map now
+                                $(".map-div").show();
                                 mapboxgl.accessToken = "pk.eyJ1Ijoic2NvdHRqYWMwMSIsImEiOiJjajYxamFzdmkwdmNlMndvMzNsam00ZG1oIn0.u5dRjgnkQLTHRcKuxB-KkQ";
                                 var mapbox = new mapboxgl.Map({
                                     container: "mapbox",
@@ -218,9 +219,6 @@ $(document).ready(function () {
                                     center: [Events[0].venue.longitude, Events[0].venue.latitude],
                                     zoom: 3
                                 });
-                                $(".no-map").text("Locations of Upcoming Events");
-
-                                //console.log(Events);
 
                                 for (var i = 0; i < Events.length; i++) {
                                     //Create the geojson for the map w/markers and popups
@@ -234,7 +232,7 @@ $(document).ready(function () {
                                             },
                                             properties: {
                                                 title: Events[i].venue.name,
-                                                description: Events[i].venue.city + "," + Events[i].venue.region,
+                                                description: "<a href='#events-table'>" + moment(Events[i].datetime).format('LLL') + " - " + Events[i].venue.city + "," + Events[i].venue.region + "</a>",
                                                 "marker-color": "#3bb2d0",
                                                 "marker-size": "small",
                                                 "marker-symbol": Events.length
@@ -253,7 +251,7 @@ $(document).ready(function () {
                                         new mapboxgl.Marker(el)
                                             .setLngLat(marker.geometry.coordinates)
                                             .setPopup(new mapboxgl.Popup() // add popups
-                                            .setHTML("<h5>" + marker.properties.title + "</h5><p>" + marker.properties.description + "</p>"))
+                                                .setHTML("<h5>" + marker.properties.title + "</h5><p>" + marker.properties.description + "</p>"))
                                             .addTo(mapbox);
                                     });
                                 }
@@ -349,7 +347,7 @@ $(document).ready(function () {
             } else {
                 url = data[propertyName][0];
             }
-            $('.social-links').append("<a class='icon-link' href=" + url + " target='_blank'><img alt='" + altText + "' data-toggle='tooltip' title='" + altText + "' src='assets/images/" + imageName + ".png' width='50'></a>");
+            $('.social-links').append("<a class='icon-link' href=" + url + " target='_blank'><img alt='" + altText + "' data-toggle='tooltip' title='" + altText + "' src='assets/images/" + imageName + ".png' width='42'></a>");
             linkCounter++;
         }
     }

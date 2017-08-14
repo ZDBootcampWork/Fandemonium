@@ -64,7 +64,6 @@ div.mapbox {
     border-radius: 5px;
 }
 
-
 .marker {
     background-image: url("../images/rocket-15.svg");
     background-size: cover;
@@ -82,7 +81,7 @@ div.mapbox {
 .mapboxgl-popup-content {
     text-align: center;
     font-family: "Open Sans", sans-serif;
-    font-size: 9px;
+    font-size: 10px;
 }
 
 .modal-backdrop.fade.in {
@@ -103,9 +102,6 @@ div.mapbox {
     background-color: #38404b;
 }
 
-/* no concerts message in map div */
-b.no-map {
-    text-align: center;
-    font-size: 16px;
-    margin: 20px;
+#search-events {
+    margin: 10px 10px 0 0;
 }
