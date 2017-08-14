@@ -50,10 +50,35 @@ th {
     font-size: 20px;
 }
 
+.search-saved-row {
+    margin-top: 50px;
+}
+
+#artist-input,
+#start-date-input,
+#end-date-input {
+    height: 40px;
+}
+
+.artist-label,
+.date-label {
+    margin-top: 10px;
+}
+
+#search-events {
+    margin: 0;
+    width: 100px;
+    height: 40px;
+}
+
+#my-artists-buttons {
+    padding: 2px;
+}
+
 img {
     margin: 5px 5px;
     padding: 3px;
-    border: 2px outset whitesmoke;
+    border: 2px outset #808080;
 }
 
 /* for the maps markers and popups*/
@@ -71,6 +96,10 @@ div.mapbox {
     height: 15px;
     border-radius: 50%;
     cursor: pointer;
+}
+
+.mapboxgl-map {
+    padding: 0px;
 }
 
 .mapboxgl-popup {
@@ -102,6 +131,3 @@ div.mapbox {
     background-color: #38404b;
 }
 
-#search-events {
-    margin: 10px 10px 0 0;
-}
