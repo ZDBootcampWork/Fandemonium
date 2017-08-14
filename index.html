@@ -53,13 +53,13 @@
 <!-- create a jumbo-tron to hold the title and description -->
 <div class="container">
     <!-- Row for the buttons -->
-    <div class="row">
+   <!--  <div class="row">
         <div class="col-md-12" id="my-artists-buttons"></div>
-    </div>
+    </div> -->
 
     <!-- Row for the search form and artist links panels -->
-    <div class="row">
-        <div class="col-md-8">
+    <div class="row search-saved-row">
+        <div class="col-md-9">
             <div class="panel panel-default panel-primary panel-transparent">
                 <div class="panel-heading">
                     <b>Search Events</b>
@@ -70,13 +70,13 @@
                     <form>
                         <div class="row">
                             <div class="col-md-1">
-                                <label for="artist-input" class="control-label pull-right">Artist</label>
+                                <label for="artist-input" class="control-label artist-label">Artist</label>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <input class="form-control" id="artist-input" type="text">
                             </div>
-                            <div class="col-md-3 col-md-offset-1">
-                                <label for="start-date-input" class="control-label pull-right">Dates (Optional)</label>
+                            <div class="col-md-2">
+                                <label for="start-date-input" class="control-label date-label">Dates (Optional)</label>
                             </div>
                             <div class="input-daterange col-md-2">
                                 <input type="text" class="input-sm form-control col-md-2" id="start-date-input"
@@ -88,10 +88,7 @@
                                 <input type="text" class="input-sm form-control col-md-2" id="end-date-input" name="end"
                                        placeholder="End date"/>
                             </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="pull-right">
+                            <div class="col-md-2">
                                 <button class="btn btn-default btn-primary" id="search-events">
                                     Search
                                 </button>
@@ -103,13 +100,17 @@
             </div>
         </div>
 
-        <div class="col-md-4 social-div">
+        <!-- <div class="row">
+            <div class="col-md-12" id="my-artists-buttons"></div>
+        </div> -->
+
+        <div class="col-md-3">
             <div class="panel panel-default panel-primary panel-transparent">
                 <div class="panel-heading">
-                    <b class="artist-name"></b>
+                    <b class="saved-searches">Saved Searches</b>
                 </div>
-                <div class="panel-body">
-                    <div class="social-links"></div>
+                <div class="panel-body" id="my-artists-buttons">
+                    <div id="my-artists-buttons"></div>
                 </div>
             </div>
         </div>
@@ -117,12 +118,24 @@
 
 
     <div class="row">
-        <div class="col-md-12 map-div">
+        <div class="col-md-9 map-div">
             <div class="panel panel-default panel-primary panel-transparent">
                 <div class="panel-heading">
                     <b>Locations of Upcoming Events</b>
                 </div>
-                <div class="panel-body" id="mapbox" style="min-height: 560px;">
+                <div class="panel-body" id="mapbox" style="min-height: 400px;">
+                <!-- <div class="panel-body" id="mapbox" style="min-height: 560px;"> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 social-div">
+            <div class="panel panel-default panel-primary panel-transparent">
+                <div class="panel-heading">
+                    <b class="artist-name"></b>
+                </div>
+                <div class="panel-body">
+                    <div class="social-links"></div>
                 </div>
             </div>
         </div>
