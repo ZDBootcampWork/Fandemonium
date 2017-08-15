@@ -113,7 +113,7 @@ $(document).ready(function () {
                 // Proceed only if a valid artist was entered
                 if (validArtistEntered === true) {
                     // Now that we know artist exists, we can display it on headers
-                    $(".events-heading").html(artist + " - Upcoming Shows");
+                    $(".events-heading").html(toTitleCase(artist) + " - Upcoming Shows");
                     $(".events-div").show();
 
                     // And put the searched artist in DB - Need to check for dup's before adding to DB
