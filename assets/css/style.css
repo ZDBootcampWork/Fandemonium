@@ -126,5 +126,59 @@ div.mapbox {
 }
 
 @media screen and (min-width: 991px) and (max-width: 1199px){
-    
+    .search-button-div{
+        padding-left: 0;
+    }
+
+    .artist-label,
+    .date-label {
+        font-size: 12px;
+        text-align: right;
+    }
+    .date-label {
+        margin-top: 0;
+    }
+}
+
+@media screen and (min-width: 478px) and (max-width: 990px) {
+    .social-div {
+        margin-right: 25%;
+    }
+
+    #end-date-input {
+        margin: 10px 0px;
+    }
+    #search-events {
+        width: 100%;
+        margin: auto;
+    }
+}
+
+@media screen and (max-width: 477px) {
+    #end-date-input {
+        margin: 10px 0px;
+    }
+
+    #search-events {
+        width: 100%;
+        margin: auto;
+    }
+
+    .jumbotron h1 {
+        font-size: 20px;
+        letter-spacing: 5px;
+    }
+
+    th,td, #currClock  {
+        font-size: 10px;
+    }
+
+    #currClock {
+        padding-top: 5px;
+    }
+
+    b {
+        font-size: 12px;
+    }
+
 }
