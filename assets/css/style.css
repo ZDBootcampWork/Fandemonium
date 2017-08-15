@@ -73,6 +73,7 @@ img {
     margin: 5px 5px;
     padding: 3px;
     border: 2px outset #808080;
+    border-radius: 3px;
 }
 
 /* for the maps markers and popups*/
@@ -117,7 +118,7 @@ div.mapbox {
 
 /* artist buttons styling */
 .artist-button {
-    margin: 3px;
+    margin: 4px 0 4px 4px;
     background-color: #38404b;
 }
 
@@ -125,8 +126,19 @@ div.mapbox {
     background-color: #38404b;
 }
 
-@media screen and (min-width: 991px) and (max-width: 1199px){
-    .search-button-div{
+/* artist remove buttons styling */
+.remove-button {
+    margin: 4px 4px 4px 0;
+    background-color: #38404b;
+}
+
+.remove-button:hover {
+    background-color: #38404b;
+}
+
+/* Media queries for responsive layout on smaller screen sizes */
+@media screen and (min-width: 991px) and (max-width: 1199px) {
+    .search-button-div {
         padding-left: 0;
     }
 
@@ -135,6 +147,7 @@ div.mapbox {
         font-size: 12px;
         text-align: right;
     }
+
     .date-label {
         margin-top: 0;
     }
@@ -148,6 +161,7 @@ div.mapbox {
     #end-date-input {
         margin: 10px 0px;
     }
+
     #search-events {
         width: 100%;
         margin: auto;
@@ -169,7 +183,7 @@ div.mapbox {
         letter-spacing: 5px;
     }
 
-    th,td, #currClock  {
+    th, td, #currClock {
         font-size: 10px;
     }
 

@@ -279,17 +279,30 @@ $(document).ready(function () {
 
     // On changes to DB - this will be called on first page load
     // and then every time a new entry is added to the DB
+    // We create a button group for each artist. Left side is for quick
+    // searches and right side is to delete the artist
     database.ref().on("child_added", function (childSnapshot) {
-        // Add new artist to the "your artists" buttons list
-        var $newButton = $("<button>");
-        // Add some bootstrap classes and attributes to our button
-        $newButton.attr("type", "button");
-        $newButton.attr("data-artist", childSnapshot.val().artist);
-        $newButton.addClass("btn btn-info btn-sm artist-button");
+        var $buttonGrpDiv = $("<div>").addClass("btn-group");
+
+        var $artistButton = $("<button>").addClass("btn btn-info btn-sm artist-button");
+        // Add some attributes to our button
+        $artistButton.attr("type", "button");
+        $artistButton.attr("data-artist", childSnapshot.val().artist);
         // Provide button text
-        $newButton.text(childSnapshot.val().artist);
-        // Added the button to the buttons-view div
-        $artistButtons.append($newButton);
+        $artistButton.html(childSnapshot.val().artist);
+
+        var $removeButton = $("<button>").addClass("btn btn-info btn-sm dropdown-toggle remove-button");
+        // Add some attributes to our button
+        $removeButton.attr("type", "button");
+        $removeButton.attr("data-remove-artist", childSnapshot.val().artist);
+        $removeButton.attr("data-toggle", "dropdown");
+        $removeButton.attr("aria-haspopup", "true");
+        $removeButton.attr("aria-expanded", "false");
+        $removeButton.html("<span>X</span>");
+
+        $buttonGrpDiv.append($artistButton);
+        $buttonGrpDiv.append($removeButton);
+        $artistButtons.append($buttonGrpDiv);
         // Handle the errors
     }, function (errorObject) {
         console.log("Errors handled: " + errorObject.code);
@@ -303,6 +316,14 @@ $(document).ready(function () {
 
         $("#artist-input").val(clickedArtist);
         $("#search-events").trigger("click");
+    });
+
+
+    // Click handler for remove buttons attached to artist buttons.
+    $(document).on("click", ".remove-button", function () {
+        var removeArtist = $(this).attr("data-remove-artist");
+
+        removeArtistFromDB(removeArtist);
     });
 
 
@@ -369,4 +390,24 @@ $(document).ready(function () {
         $("#start-date-input").val('');
         $("#end-date-input").val('');
     }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Remove an artist from the DB and from the screen -- called when the user clicks the X next
+    // to an artist button
+    function removeArtistFromDB(artist) {
+        // remove from db
+        database.ref().orderByChild('artist').equalTo(artist).on("value", function (snapshot) {
+            snapshot.forEach(function (data) {
+                database.ref().child(data.key).remove();
+            });
+        });
+
+        // remove from screen - along with the x (remove) button
+        $artistButtonToRemove = $artistButtons.find("[data-artist='" + artist + "']");
+        $xButtonToRemove = $artistButtons.find("[data-remove-artist='" + artist + "']");
+        $artistButtonToRemove.remove();
+        $xButtonToRemove.remove();
+    }
+
 });
