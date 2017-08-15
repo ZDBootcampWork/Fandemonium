@@ -20,10 +20,6 @@ th {
     background-size: cover;
 }
 
-/*.panel-transparent {
-    background: none;
-}*/
-
 /* Overriding some bootstrap styles here */
 /* Make the jumbotron fonts smaller */
 .jumbotron {
@@ -39,10 +35,8 @@ th {
     font-weight: 200;
     font-size: 300%;
     letter-spacing: 15px;
-    /*  line-height: 50px;*/
     margin-top: 0;
     margin-bottom: 0;
-    /*font-weight: bold;*/
 }
 
 /*styling tagline*/
@@ -131,3 +125,6 @@ div.mapbox {
     background-color: #38404b;
 }
 
+@media screen and (min-width: 991px) and (max-width: 1199px){
+    
+}
