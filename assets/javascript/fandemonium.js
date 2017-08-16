@@ -36,8 +36,9 @@ $(document).ready(function () {
     // THIS IS THE MAIN CLICK HANDLER -- A LOT OF THINGS HAPPEN WHEN USER ENTERS ARTIST NAME
     // AND OPTIONAL DATE RANGE AND CLICKS "SEARCH" BUTTON
     // When user clicks "search" button, add a new artist to firebase (assuming it doesn't already
-    // exist in the db) and get info from bandsintown about artist and upcoming events and use the info
-    // to populate the screen sections like map, artist links, etc.
+    // exist in the db) and get info from bandsintown and musicgraph APIs about the artist and
+    // upcoming events and use the info to populate the screen sections like map, events table,
+    // artist social links, etc.
     $("#search-events").unbind('click').click(function (e) {
 
         e.preventDefault();
@@ -176,8 +177,7 @@ $(document).ready(function () {
                             Events.length = 0;
                             var event;
 
-                            // THIS IS THE PART THAT POPULATES THE EVENTS TABLE ON SCREEN
-                            // Clear the table body rows
+                            // Clear the events table body rows
                             $("#events-table-body tr").remove();
                             //$("#mapbox").empty();
 
@@ -187,38 +187,16 @@ $(document).ready(function () {
                                 $("#events-table-header").html("<tr><th colspan=4>No upcoming events</th></tr>");
                             }
                             else {
-                                // there are some events -- put a table header
-                                $("#events-table-header").html("<tr><th>Date/time</th><th>Location</th><th>Venue</th><th>Tickets</th></tr>");
-                                // This is the main loop where we will do things with each of the event dates/venues/etc.
                                 for (var i = 0; i < response.length; i++) {
-
-                                    // save event object off into a variable for easier access
-                                    event = response[i];
                                     // populate Events[] global array entries via a deep copy of the event objects
+                                    // drawing the map requires this data
                                     Events[i] = JSON.parse(JSON.stringify(response[i]));
+                                }
 
-                                    //Create a mapbutton to allow/enable the flyto option on the map
-                                      var mapBtn = $("<button>");
-                                        mapBtn.addClass("flyTo btn btn-default btn-xs");
-                                        mapBtn.attr({
-                                        type: "button",
-                                        "data-lng": event.venue.longitude,
-                                        "data-lat": event.venue.latitude
-                                      });
-
-                                    // add a row to the on-screen events table
-                                    $("#events-table-body").append("<tr><td>" + moment(event.datetime).format('LLL') + "</td>" +
-                                        "<td>" + event.venue.city + ", " + event.venue.region + ", " + event.venue.country + "   " + mapBtn + "</td>" +
-                                        "<td>" + event.venue.name + "</td>" +
-                                        "<td>" + GetTicketOfferUrl(event) + "</td></tr>");
-                                } // end - for loop - events list
-                            }  // end - else
-
-                            //////////////////////////////////////////////////////////////////////////////
-                            // THIS IS WHERE MAP STUFF HAPPENS -- IF THERE ARE ANY EVENTS FOR THIS ARTIST
-                            //////////////////////////////////////////////////////////////////////////////
-                            //Add the map to the DOM
-                            if (Events.length > 0) {
+                                //////////////////////////////////////////////////////////////////////////////
+                                // THIS IS WHERE MAP STUFF HAPPENS -- IF THERE ARE ANY EVENTS FOR THIS ARTIST
+                                //////////////////////////////////////////////////////////////////////////////
+                                // Add the map to the DOM
                                 // show the map now
                                 $(".map-div").show();
                                 mapboxgl.accessToken = "pk.eyJ1Ijoic2NvdHRqYWMwMSIsImEiOiJjajYxamFzdmkwdmNlMndvMzNsam00ZG1oIn0.u5dRjgnkQLTHRcKuxB-KkQ";
@@ -264,11 +242,60 @@ $(document).ready(function () {
                                             .addTo(mapbox);
                                     });
                                 }
-                            }
-                            ////////////////////
-                            // END OF MAP STUFF
-                            ////////////////////
+                                ////////////////////
+                                // END OF MAP STUFF
+                                ////////////////////
 
+                                // THIS IS THE PART THAT POPULATES THE EVENTS TABLE ON SCREEN
+                                // there are some events -- put a table header
+                                $("#events-table-header").html("<tr><th>Date/time</th><th>Location</th><th>Venue</th><th>Tickets</th></tr>");
+                                // This is the main loop where we will populate the events table
+                                for (var j = 0; j < response.length; j++) {
+                                    // save event object off into a variable for easier access
+                                    event = response[j];
+                                    // Create a row of the events table
+                                    var tableRow = $("<tr>");
+                                    var dateTimeData = $("<td>");
+                                    dateTimeData.html(moment(event.datetime).format('LLL'));
+                                    var venueLocationData = $("<td>");
+                                    venueLocationData.html(event.venue.city + ", " + event.venue.region + ", " + event.venue.country);
+
+                                    // Create a button to allow/enable the flyto option on the map
+                                    var mapBtn = $("<button>");
+                                    mapBtn.addClass("flyTo btn btn-default btn-xs");
+                                    mapBtn.attr({
+                                        type: "button",
+                                        "data-lng": event.venue.longitude,
+                                        "data-lat": event.venue.latitude
+                                    });
+                                    // nice icon for the button
+                                    mapBtn.html("<i class='material-icons'>gps_fixed</i>");
+                                    // attach a click handler to the map flyto button
+                                    mapBtn.on("click", function () {
+                                        $(window).scrollTop($('.map-div').offset().top);
+                                        // Fly to location for this event venue
+                                        var flyLat = $(this).attr("data-lat");
+                                        var flyLng = $(this).attr("data-lng");
+                                        mapbox.flyTo({
+                                            center: [flyLng, flyLat],
+                                            zoom: 6
+                                        });
+                                    });
+                                    // add the map fly to button to the <td>
+                                    venueLocationData.append(mapBtn);
+
+                                    var venueNameData = $("<td>");
+                                    venueNameData.html(event.venue.name);
+                                    var ticketOfferData = $("<td>");
+                                    ticketOfferData.html(GetTicketOfferUrl(event));
+
+                                    tableRow.append(dateTimeData);
+                                    tableRow.append(venueLocationData);
+                                    tableRow.append(venueNameData);
+                                    tableRow.append(ticketOfferData);
+                                    $("#events-table-body").append(tableRow);
+                                } // end - for loop - events list
+                            }  // end - else - there are >= 1 events
                         });     //end of API call to bandsintown
                 }           // end of if validArtistEntered
             }           // end wait for artist validity check
@@ -335,16 +362,6 @@ $(document).ready(function () {
         removeArtistFromDB(removeArtist);
     });
 
-    //Click Handler for buttons to set focus on the map and fly to the venue
-    $(document).on("click", ".flyTo", function () {
-        $(window).scrollTop($('.map-div').offset().top);
-        var flyLat = $(this).attr("data-lat");
-        var flyLng = $(this).attr("data-lng");
-        mapbox.flyTo({
-        center: [flyLng, flyLat],
-        zoom: 6
-        });
-    });
 
     /////////////////////////////////////////////////////////////////////////////////////////////
     // Utility functions go here

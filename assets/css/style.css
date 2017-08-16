@@ -136,6 +136,11 @@ div.mapbox {
     background-color: #38404b;
 }
 
+/* map fly to buttons*/
+.flyTo {
+    border: none;
+}
+
 /* Media queries for responsive layout on smaller screen sizes */
 @media screen and (min-width: 991px) and (max-width: 1199px) {
     .search-button-div {
