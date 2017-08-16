@@ -77,6 +77,8 @@ $(document).ready(function () {
                 message: "Invalid date range.  Please try again.",
                 size: 'small'
             });
+            $("#start-date-input").val('');
+            $("#end-date-input").val('');
             return;
 
         }
