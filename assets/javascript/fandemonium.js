@@ -199,16 +199,16 @@ $(document).ready(function () {
 
                                     //Create a mapbutton to allow/enable the flyto option on the map
                                       var mapBtn = $("<button>");
-                                        mapBtn.addclass("flyTo btn btn-default btn-xs");
+                                        mapBtn.addClass("flyTo btn btn-default btn-xs");
                                         mapBtn.attr({
                                         type: "button",
-                                        data-lng: event.venue.longitude,
-                                        data-lat: event.venue.latitude
+                                        "data-lng": event.venue.longitude,
+                                        "data-lat": event.venue.latitude
                                       });
 
                                     // add a row to the on-screen events table
                                     $("#events-table-body").append("<tr><td>" + moment(event.datetime).format('LLL') + "</td>" +
-                                        "<td>" + event.venue.city + ", " + event.venue.region + ", " + event.venue.country + "   "+ mapBtn + "</td>" +
+                                        "<td>" + event.venue.city + ", " + event.venue.region + ", " + event.venue.country + "   " + mapBtn + "</td>" +
                                         "<td>" + event.venue.name + "</td>" +
                                         "<td>" + GetTicketOfferUrl(event) + "</td></tr>");
                                 } // end - for loop - events list
@@ -335,6 +335,16 @@ $(document).ready(function () {
         removeArtistFromDB(removeArtist);
     });
 
+    //Click Handler for buttons to set focus on the map and fly to the venue
+    $(document).on("click", ".flyTo", function () {
+        $(window).scrollTop($('.map-div').offset().top);
+        var flyLat = $(this).attr("data-lat");
+        var flyLng = $(this).attr("data-lng");
+        mapbox.flyTo({
+        center: [flyLng, flyLat],
+        zoom: 6
+        });
+    });
 
     /////////////////////////////////////////////////////////////////////////////////////////////
     // Utility functions go here
