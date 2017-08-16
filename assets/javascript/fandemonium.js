@@ -197,9 +197,18 @@ $(document).ready(function () {
                                     // populate Events[] global array entries via a deep copy of the event objects
                                     Events[i] = JSON.parse(JSON.stringify(response[i]));
 
+                                    //Create a mapbutton to allow/enable the flyto option on the map
+                                      var mapBtn = $("<button>");
+                                        mapBtn.addclass("flyTo btn btn-default btn-xs");
+                                        mapBtn.attr({
+                                        type: "button",
+                                        data-lng: event.venue.longitude,
+                                        data-lat: event.venue.latitude
+                                      });
+
                                     // add a row to the on-screen events table
                                     $("#events-table-body").append("<tr><td>" + moment(event.datetime).format('LLL') + "</td>" +
-                                        "<td>" + event.venue.city + ", " + event.venue.region + ", " + event.venue.country + "</td>" +
+                                        "<td>" + event.venue.city + ", " + event.venue.region + ", " + event.venue.country + "   "+ mapBtn + "</td>" +
                                         "<td>" + event.venue.name + "</td>" +
                                         "<td>" + GetTicketOfferUrl(event) + "</td></tr>");
                                 } // end - for loop - events list
