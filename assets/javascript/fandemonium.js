@@ -49,6 +49,7 @@ $(document).ready(function () {
         var endDate = $("#end-date-input").val().trim();
         var validArtistEntered = undefined;
         var bandId;  // used with musicgraph API
+        var ajaxError = false;
 
         // VALIDATE user inputs here!!
         if (artist === "") {
@@ -87,8 +88,14 @@ $(document).ready(function () {
         $.ajax({
             url: "https://cors-anywhere.herokuapp.com/http://api.musicgraph.com/api/v2/artist/suggest?api_key=" + musicGraphKey + "&prefix=" + artist + "&limit=1",
             method: 'GET'
+            ,
+            beforeSend: function(jqXHR, settings){
+                jqXHR.setRequestHeader('x-requested-with', 'XMLHttpRequest');
+                jqXHR.setRequestHeader('origin', '');
+            }
         })
             .done(function (response) {
+                console.log(response);
                 //Handle if no artist or bandId is found (invalid artist name)
                 if (response.data.length !== 0) {
                     bandId = response.data[0].id;
@@ -101,13 +108,26 @@ $(document).ready(function () {
                     validArtistEntered = false;
                 }
                 //End If//
-            }); // end of API call to musicgraph to get band ID
+            }) // end of API call to musicgraph to get band ID
+            .fail(function(jqXHR, textStatus, errorThrown ){
+                console.log("Ajax call failed!");
+                ajaxError = true;
+            });
 
 
         // wait until band ID is received so we know if it's a valid artist or not.
         var intervalHandle = setInterval(function () {
             if (validArtistEntered === undefined) {
-                console.log("waiting for artist validity check");
+                if (ajaxError === true) {
+                    clearInterval(intervalHandle);
+                    bootbox.alert({
+                        message: "Ooops! Ajax call failed. Something not working in the API.",
+                        size: 'small'
+                    });
+                }
+                else {
+                    console.log("still waiting for artist validity check");
+                }
             }
             else {
                 // we know if it's a valid artist or not now
@@ -306,6 +326,7 @@ $(document).ready(function () {
 
         // clear the on-screen input fields to be ready for next search
         clearInputFields();
+        ajaxError = false;
 
     });
     ////   END OF MAIN CLICK HANDLER FOR SEARCH BUTTON
