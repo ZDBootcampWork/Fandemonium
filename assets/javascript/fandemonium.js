@@ -114,17 +114,28 @@ $(document).ready(function () {
                 ajaxError = true;
             });
 
+        // If we don't get a response to ajax request within 5 secs, tell user something isn't right
+        setTimeout(function() {
+                    if (validArtistEntered === undefined) {
+                        bootbox.alert({
+                            message: "The MusicGraph API is taking too long to respond.... It may be down.",
+                            size: 'small'
+                        });
+                    }
+                }, 4000);
 
         // wait until band ID is received so we know if it's a valid artist or not.
         var intervalHandle = setInterval(function () {
             if (validArtistEntered === undefined) {
+                // ajax request returned error
                 if (ajaxError === true) {
                     clearInterval(intervalHandle);
                     bootbox.alert({
-                        message: "Ooops! Ajax call failed. Something not working in the API.",
+                        message: "Ooops! Ajax call failed. MusicGraph API is down!!",
                         size: 'small'
                     });
                 }
+                // keep waiting
                 else {
                     console.log("still waiting for artist validity check");
                 }
